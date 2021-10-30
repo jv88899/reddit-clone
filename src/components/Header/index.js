@@ -1,3 +1,6 @@
+import HeaderDarkButton from "components/Header/DarkButton";
+import HeaderLogo from "components/Header/Logo";
+import HeaderNavLink from "components/Header/NavLink";
 import styled from "styled-components/macro";
 
 const Wrapper = styled.header`
@@ -24,6 +27,13 @@ const Wrapper = styled.header`
   }
 `;
 
-export default function Header() {
-  return <>header</>;
+export default function Header(props) {
+  return (
+    <Wrapper>
+      <HeaderLogo />
+      <HeaderDarkButton />
+      <HeaderNavLink to="/login">log in</HeaderNavLink>
+      <HeaderNavLink to="/signup">sign up</HeaderNavLink>
+    </Wrapper>
+  );
 }
