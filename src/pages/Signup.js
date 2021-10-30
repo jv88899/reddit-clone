@@ -11,6 +11,7 @@ export default function Signup() {
   const {
     register,
     formState: { errors },
+    getValues,
   } = useForm({
     mode: "onBlur",
   });
@@ -89,6 +90,10 @@ export default function Signup() {
             maxLength: {
               value: 30,
               message: "Must be less than 30 characters",
+            },
+            validate: (value) => {
+              const { password } = getValues();
+              return password === value || "Passwords should match";
             },
           })}
           type="password"
