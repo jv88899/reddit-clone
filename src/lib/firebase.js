@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 // using the lite version because app doesn't need real-time features
 import { getFirestore } from "firebase/firestore/lite";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -21,9 +21,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export async function loginUser() {}
+export async function signupUser({ email, password }) {
+  const userCreds = await createUserWithEmailAndPassword(auth, email, password);
+  return userCreds;
+}
 
-export async function signupUser() {}
+export async function loginUser() {}
 
 export function useAuthUser() {}
 
