@@ -1,3 +1,4 @@
+import Error from "components/shared/form/Error";
 import Form from "components/shared/form/Form";
 import Input from "components/shared/form/Input";
 import InputWrapper from "components/shared/form/InputWrapper";
@@ -24,8 +25,6 @@ export default function Signup() {
     console.log(userCreds);
   }
 
-  console.log(errors);
-
   return (
     <Form onSubmit={onSubmit}>
       <InputWrapper>
@@ -44,6 +43,7 @@ export default function Signup() {
           })}
           type="text"
         />
+        <Error>{errors.username?.message}</Error>
       </InputWrapper>
       <InputWrapper>
         <Label>email</Label>
@@ -57,6 +57,7 @@ export default function Signup() {
           })}
           type="email"
         />
+        <Error>{errors.email?.message}</Error>
       </InputWrapper>
       <InputWrapper>
         <Label>password</Label>
@@ -74,6 +75,7 @@ export default function Signup() {
           })}
           type="password"
         />
+        <Error>{errors.password?.message}</Error>
       </InputWrapper>
       <InputWrapper>
         <Label>confirm password</Label>
@@ -91,6 +93,7 @@ export default function Signup() {
           })}
           type="password"
         />
+        <Error>{errors.confirm?.message}</Error>
       </InputWrapper>
       <SubmitButton type="submit">sign up</SubmitButton>
     </Form>
