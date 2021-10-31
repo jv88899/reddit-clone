@@ -2,7 +2,13 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 // using the lite version because app doesn't need real-time features
-import { getFirestore } from "firebase/firestore/lite";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore/lite";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,11 +32,16 @@ export async function signupUser({ email, password }) {
   return userCreds;
 }
 
+export async function checkIfUsernameTaken(username) {
+  const col = collection(db, "users");
+  const q = query(col, where("username", "==", username));
+  const { empty } = await getDocs(q);
+  return empty || "Username taken";
+}
+
 export async function loginUser() {}
 
 export function useAuthUser() {}
-
-export async function checkIfUsernameTaken() {}
 
 export async function logOut() {}
 
