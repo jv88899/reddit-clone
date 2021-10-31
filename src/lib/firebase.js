@@ -4,9 +4,11 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 // using the lite version because app doesn't need real-time features
 import {
   getFirestore,
+  doc,
   collection,
   query,
   where,
+  setDoc,
   getDocs,
 } from "firebase/firestore/lite";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -27,9 +29,21 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export async function signupUser({ email, password }) {
+export async function signupUser({ username, email, password }) {
   const userCreds = await createUserWithEmailAndPassword(auth, email, password);
-  return userCreds;
+  await createUser({
+    user: userCreds.user,
+    username,
+  });
+}
+
+export async function createUser({ user, username }) {
+  const userDoc = doc(db, "users", user.uid);
+  await setDoc(userDoc, {
+    uid: user.uid,
+    username,
+    email: user.email,
+  });
 }
 
 export async function checkIfUsernameTaken(username) {
@@ -44,8 +58,6 @@ export async function loginUser() {}
 export function useAuthUser() {}
 
 export async function logOut() {}
-
-export async function createUser() {}
 
 export async function createPost() {}
 

@@ -20,6 +20,7 @@ export default function Signup() {
     event.preventDefault();
     const { username, email, password, confirm } = event.target.elements;
     const userCreds = await signupUser({
+      username: username.value,
       email: email.value,
       password: password.value,
     });
