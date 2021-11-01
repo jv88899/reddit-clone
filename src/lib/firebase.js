@@ -4,6 +4,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 // using the lite version because app doesn't need real-time features
 import {
@@ -71,14 +72,15 @@ export function useAuthUser() {
     async function getUser(user) {
       if (!user) {
         resetUser();
-      }
-      // get user by uid from firestore
-      const userRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        setUser(userDoc.data());
       } else {
-        resetUser();
+        // get user by uid from firestore
+        const userRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          setUser(userDoc.data());
+        } else {
+          resetUser();
+        }
       }
     }
 
@@ -92,9 +94,11 @@ export function useAuthUser() {
   }, [setUser, resetUser]);
 }
 
-export async function loginUser() {}
+export async function logOut() {
+  return await signOut(auth);
+}
 
-export async function logOut() {}
+export async function loginUser() {}
 
 export async function createPost() {}
 

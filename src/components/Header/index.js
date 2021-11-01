@@ -2,8 +2,12 @@ import HeaderDarkButton from "components/Header/DarkButton";
 import HeaderLogo from "components/Header/Logo";
 import HeaderNavLink from "components/Header/NavLink";
 import HeaderUsername from "components/Header/Username";
+import { logOut } from "lib/firebase";
+import toast from "react-hot-toast";
+import { useMutation } from "react-query";
 import useStore from "store";
 import styled from "styled-components/macro";
+import shallow from "zustand/shallow";
 
 const Wrapper = styled.header`
   position: sticky;
@@ -29,8 +33,23 @@ const Wrapper = styled.header`
   }
 `;
 
-export default function Header(props) {
-  const { user } = useStore();
+export default function Header({ history }) {
+  const [user, resetUser] = useStore(
+    (state) => [state.user, state.resetUser],
+    shallow
+  );
+  const mutation = useMutation(logOut, {
+    onSuccess: () => {
+      resetUser();
+      history.push("/");
+      toast("Logged out", {
+        icon: "👋",
+      });
+    },
+    onError: () => {
+      toast.error("Error logging out");
+    },
+  });
 
   return (
     <Wrapper>
@@ -39,7 +58,9 @@ export default function Header(props) {
       {user ? (
         <>
           <HeaderUsername username={user.username} />
-          <HeaderNavLink to="/">log out</HeaderNavLink>
+          <HeaderNavLink to="/" onClick={mutation.mutate}>
+            log out
+          </HeaderNavLink>
         </>
       ) : (
         <>
