@@ -9,7 +9,6 @@ import useStore from "store";
 
 export default function App() {
   useAuthUser();
-  const { user } = useStore();
 
   return (
     <>

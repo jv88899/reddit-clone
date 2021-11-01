@@ -9,10 +9,10 @@ const Wrapper = styled(HeaderNavLink)`
   min-width: 0;
 `;
 
-export default function HeaderUsername() {
+export default function HeaderUsername({ username }) {
   return (
-    <Wrapper to={`/u/username`}>
-      <HeaderUsernameText>username</HeaderUsernameText>
+    <Wrapper to={`/u/${username}`}>
+      <HeaderUsernameText>{username}</HeaderUsernameText>
     </Wrapper>
   );
 }

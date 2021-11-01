@@ -1,6 +1,8 @@
 import HeaderDarkButton from "components/Header/DarkButton";
 import HeaderLogo from "components/Header/Logo";
 import HeaderNavLink from "components/Header/NavLink";
+import HeaderUsername from "components/Header/Username";
+import useStore from "store";
 import styled from "styled-components/macro";
 
 const Wrapper = styled.header`
@@ -28,12 +30,23 @@ const Wrapper = styled.header`
 `;
 
 export default function Header(props) {
+  const { user } = useStore();
+
   return (
     <Wrapper>
       <HeaderLogo />
       <HeaderDarkButton />
-      <HeaderNavLink to="/login">log in</HeaderNavLink>
-      <HeaderNavLink to="/signup">sign up</HeaderNavLink>
+      {user ? (
+        <>
+          <HeaderUsername username={user.username} />
+          <HeaderNavLink to="/">log out</HeaderNavLink>
+        </>
+      ) : (
+        <>
+          <HeaderNavLink to="/login">log in</HeaderNavLink>
+          <HeaderNavLink to="/signup">sign up</HeaderNavLink>
+        </>
+      )}
     </Wrapper>
   );
 }
