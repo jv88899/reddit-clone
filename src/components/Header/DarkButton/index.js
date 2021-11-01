@@ -1,6 +1,7 @@
 import { headerItem } from "components/shared/helpers";
 import styled from "styled-components/macro";
 import HeaderDarkButtonIcon from "./Icon";
+import useStore from "store";
 
 const DarkButton = styled.span`
   ${headerItem};
@@ -16,8 +17,9 @@ const DarkButton = styled.span`
 `;
 
 export default function HeaderDarkButton() {
+  const { toggleTheme } = useStore();
   return (
-    <DarkButton>
+    <DarkButton onClick={toggleTheme}>
       <HeaderDarkButtonIcon />
     </DarkButton>
   );
