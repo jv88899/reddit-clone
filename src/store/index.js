@@ -8,6 +8,9 @@ const useStore = create(
       toggleTheme: () => {
         set((state) => ({ isDarkTheme: !state.isDarkTheme }));
       },
+      user: null,
+      setUser: (user) => set({ user }),
+      resetUser: () => set({ user: null }),
     }),
     {
       name: "reddit-clone",

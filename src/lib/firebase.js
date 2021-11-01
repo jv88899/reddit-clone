@@ -1,6 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 // using the lite version because app doesn't need real-time features
 import {
   getFirestore,
@@ -10,7 +14,11 @@ import {
   where,
   setDoc,
   getDocs,
+  getDoc,
 } from "firebase/firestore/lite";
+import { useEffect } from "react";
+import useStore from "store";
+import shallow from "zustand/shallow";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -53,9 +61,38 @@ export async function checkIfUsernameTaken(username) {
   return empty || "Username taken";
 }
 
-export async function loginUser() {}
+export function useAuthUser() {
+  const [setUser, resetUser] = useStore(
+    (state) => [state.setUser, state.resetUser],
+    shallow
+  );
 
-export function useAuthUser() {}
+  useEffect(() => {
+    async function getUser(user) {
+      if (!user) {
+        resetUser();
+      }
+      // get user by uid from firestore
+      const userRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        setUser(userDoc.data());
+      } else {
+        resetUser();
+      }
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      getUser(user);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [setUser, resetUser]);
+}
+
+export async function loginUser() {}
 
 export async function logOut() {}
 
