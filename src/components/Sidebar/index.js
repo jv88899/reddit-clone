@@ -1,3 +1,6 @@
+import SidebarCategoryList from "components/Sidebar/CategoryList";
+import SidebarCreatePostButton from "components/Sidebar/CreatePostButton";
+import useStore from "store";
 import styled from "styled-components/macro";
 
 const Wrapper = styled.aside`
@@ -15,5 +18,12 @@ const Wrapper = styled.aside`
 `;
 
 export default function Sidebar() {
-  return <>sidebar</>;
+  const user = useStore((state) => state.user);
+
+  return (
+    <Wrapper>
+      {user && <SidebarCreatePostButton />}
+      <SidebarCategoryList />
+    </Wrapper>
+  );
 }

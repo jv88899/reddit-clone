@@ -1,5 +1,6 @@
 import CategoryMenu from "components/CategoryMenu";
 import Sidebar from "components/Sidebar";
+import PostList from "pages/PostList";
 import { Route } from "react-router-dom";
 import styled from "styled-components/macro";
 
@@ -28,6 +29,10 @@ export default function Home() {
     <Wrapper>
       <HomeMainSection>
         <Route component={CategoryMenu} />
+        <Route exact path="/" component={PostList} />
+        <Route exact path="/a/:category" component={PostList} />
+        <Route exact path="/u/:username" component={PostList} />
+        <Route exact path="/a/:category/:postId" component={PostDetail} />
       </HomeMainSection>
       <Route component={Sidebar} />
     </Wrapper>
