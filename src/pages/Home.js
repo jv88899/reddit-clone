@@ -1,5 +1,6 @@
 import CategoryMenu from "components/CategoryMenu";
 import Sidebar from "components/Sidebar";
+import PostDetail from "pages/PostDetail";
 import PostList from "pages/PostList";
 import { Route } from "react-router-dom";
 import styled from "styled-components/macro";
