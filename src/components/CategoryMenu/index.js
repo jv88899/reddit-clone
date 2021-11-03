@@ -1,3 +1,6 @@
+import CategoryMenuCreatePostButton from "components/CategoryMenu/CreatePostButton";
+import CategoryMenuDropdown from "components/CategoryMenu/Dropdown";
+import useStore from "store";
 import styled from "styled-components/macro";
 
 const Menu = styled.nav`
@@ -12,5 +15,12 @@ const Menu = styled.nav`
 `;
 
 export default function CategoryMenu() {
-  return <>categorymenu</>;
+  const user = useStore((state) => state.user);
+
+  return (
+    <Menu>
+      <CategoryMenuDropdown />
+      {user && <CategoryMenuCreatePostButton />}
+    </Menu>
+  );
 }
