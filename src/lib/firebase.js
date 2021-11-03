@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import {
   getAuth,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
@@ -98,7 +99,9 @@ export async function logOut() {
   return await signOut(auth);
 }
 
-export async function loginUser() {}
+export async function loginUser({ email, password }) {
+  return await signInWithEmailAndPassword(auth, email, password);
+}
 
 export async function createPost() {}
 
