@@ -1,4 +1,5 @@
 import categories from "categories";
+import Error from "components/shared/form/Error";
 import Form from "components/shared/form/Form";
 import Input from "components/shared/form/Input";
 import InputWrapper from "components/shared/form/InputWrapper";
@@ -8,6 +9,8 @@ import RadioGroupOption from "components/shared/form/RadioGroup/Option";
 import SelectWrapper from "components/shared/form/SelectWrapper";
 import SubmitButton from "components/shared/form/SubmitButton";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import isURL from "validator/lib/isURL";
 
 const postTypes = [
   {
@@ -21,6 +24,10 @@ const postTypes = [
 ];
 
 export default function CreatePost() {
+  const {
+    register,
+    formState: { errors },
+  } = useForm({ mode: "onBlur" });
   const [type, setType] = useState("text");
 
   return (
@@ -40,7 +47,14 @@ export default function CreatePost() {
       <InputWrapper>
         <Label>Category</Label>
         <SelectWrapper>
-          <Input type="select" as="select" defaultValue={categories[0]}>
+          <Input
+            {...register("category", {
+              required: "Category is required",
+            })}
+            type="select"
+            as="select"
+            defaultValue={categories[0]}
+          >
             {categories.map((c, index) => (
               <option key={index} value={c}>
                 {c}
@@ -48,21 +62,61 @@ export default function CreatePost() {
             ))}
           </Input>
         </SelectWrapper>
+        <Error>{errors.category?.message}</Error>
       </InputWrapper>
       <InputWrapper>
         <Label>title</Label>
-        <Input type="text" placeholder="title" />
+        <Input
+          {...register("title", {
+            required: "Title is required",
+            minLength: {
+              value: 5,
+              message: "Title must be at least 5 characters",
+            },
+            maxLength: {
+              value: 100,
+              message: "Title must be less than 100 characters",
+            },
+          })}
+          type="text"
+          placeholder="title"
+        />
+        <Error>{errors.title?.message}</Error>
       </InputWrapper>
       {type === "link" && (
         <InputWrapper>
           <Label>url</Label>
-          <Input placeholder="url" />
+          <Input
+            {...register("url", {
+              validate: (value) => {
+                return isURL(value) || "Please provide a valid URL";
+              },
+            })}
+            placeholder="url"
+          />
+          <Error>{errors.url?.message}</Error>
         </InputWrapper>
       )}
       {type === "text" && (
         <InputWrapper>
           <Label>text</Label>
-          <Input placeholder="text" as="textarea" rows="6" />
+          <Input
+            {...register("text", {
+              required: "Text is required",
+              minLength: {
+                value: 5,
+                message: "Text must be at least 5 characaters",
+              },
+              maxLength: {
+                value: 10000,
+                message: "Text must be under 10,000 characters",
+              },
+            })}
+            placeholder="text"
+            as="textarea"
+            rows="6"
+          />
+          <Error>{errors.text?.message}</Error>
         </InputWrapper>
       )}
       <SubmitButton type="submit">create post</SubmitButton>
