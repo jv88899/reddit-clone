@@ -1,3 +1,6 @@
+import CategoryMenu from "components/CategoryMenu";
+import Sidebar from "components/Sidebar";
+import { Route } from "react-router-dom";
 import styled from "styled-components/macro";
 
 const Wrapper = styled.div`
@@ -21,5 +24,12 @@ const HomeMainSection = styled.main`
 `;
 
 export default function Home() {
-  return <>home</>;
+  return (
+    <Wrapper>
+      <HomeMainSection>
+        <Route component={CategoryMenu} />
+      </HomeMainSection>
+      <Route component={Sidebar} />
+    </Wrapper>
+  );
 }
