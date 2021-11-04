@@ -16,7 +16,7 @@ export default function PostContent({ post, full }) {
     <Wrapper>
       <PostContentTitle post={post} full={full} />
       {renderContent(post, full)}
-      <PostContentDetail post={post} full={full} />
+      <PostContentDetail post={post} />
     </Wrapper>
   );
 }
