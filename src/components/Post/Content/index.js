@@ -1,4 +1,6 @@
 import PostContentDetail from "components/Post/Content/Detail";
+import PostContentFullText from "components/Post/Content/FullText";
+import PostContentPreview from "components/Post/Content/Preview";
 import PostContentTitle from "components/Post/Content/Title";
 import styled from "styled-components/macro";
 
@@ -21,4 +23,18 @@ export default function PostContent({ post, full }) {
   );
 }
 
-function renderContent() {}
+function renderContent(post, full) {
+  const { type, url, text } = post;
+
+  switch (type) {
+    case "link":
+      return <PostContentPreview>{url}</PostContentPreview>;
+    case "text":
+      if (full) {
+        return <PostContentFullText>{text}</PostContentFullText>;
+      }
+      return <PostContentPreview>{text}</PostContentPreview>;
+    default:
+      return;
+  }
+}

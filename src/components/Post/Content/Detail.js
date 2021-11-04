@@ -24,11 +24,11 @@ const Wrapper = styled.div`
 `;
 
 export default function PostContentDetail({ post }) {
-  const { catergory, id, author, created } = post;
+  const { category, id, author, created } = post;
 
   return (
     <Wrapper>
-      <Link to={`/a/${catergory}/${id}`}>0 comments</Link>
+      <Link to={`/a/${category}/${id}`}>0 comments</Link>
       <Link to={`/a/${category}`}>/a/{category}</Link>
       <span>by</span>
       <Author username={author.username} />
