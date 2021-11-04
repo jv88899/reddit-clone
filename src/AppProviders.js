@@ -6,14 +6,17 @@ import useStore from "store";
 import { ThemeProvider } from "styled-components";
 import GlobalStyle from "styles/globalStyle";
 import theme from "theme";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 const history = createBrowserHistory();
 
 export default function AppProviders({ children }) {
   const { isDarkTheme } = useStore();
+
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
       <Toaster position="bottom-center" />
       <ThemeProvider theme={theme(isDarkTheme)}>
         <GlobalStyle />
