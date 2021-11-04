@@ -1,3 +1,7 @@
+import Empty from "components/shared/Empty";
+import LoadingIndicatorBox from "components/shared/LoadingIndicator/Box";
+import { getPosts } from "lib/firebase";
+import { useQuery } from "react-query";
 import styled from "styled-components/macro";
 
 const List = styled.ul`
@@ -20,7 +24,18 @@ const Item = styled.li`
 `;
 
 export default function PostList() {
-  return <>postlist</>;
+  const { data: posts, isLoading } = useQuery("posts", getPosts);
+
+  if (isLoading) return <LoadingIndicatorBox />;
+  if (!posts || !posts.length) return <Empty />;
+
+  return (
+    <List>
+      {posts.map((post) => (
+        <PostListItem key={post.id} />
+      ))}
+    </List>
+  );
 }
 
 function PostListItem() {
