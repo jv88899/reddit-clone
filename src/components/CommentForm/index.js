@@ -1,3 +1,4 @@
+import CommentFormSubmitButton from "components/CommentForm/SubmitButton";
 import Form from "components/shared/form/Form";
 import Input from "components/shared/form/Input";
 import { transition } from "components/shared/helpers";
@@ -53,5 +54,14 @@ const CommentFormTextArea = styled(Input)`
 `;
 
 export default function CommentForm() {
-  return <>commentform</>;
+  return (
+    <StyledForm>
+      <CommentFormTextArea
+        as="textarea"
+        placeholder="enter your comment"
+        rows="6"
+      />
+      <CommentFormSubmitButton />
+    </StyledForm>
+  );
 }
