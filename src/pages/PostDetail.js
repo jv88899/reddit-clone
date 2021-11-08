@@ -1,4 +1,5 @@
 import CommentForm from "components/CommentForm";
+import CommentList from "components/CommentList";
 import Post from "components/Post";
 import DeleteButton from "components/shared/DeleteButton";
 import Empty from "components/shared/Empty";
@@ -83,5 +84,5 @@ function PostDetailInfoBar({ user, postId, post }) {
 }
 
 function PostDetailCommentSection() {
-  return <>postdetailcommentsection</>;
+  return <CommentList comments={[]} />;
 }
