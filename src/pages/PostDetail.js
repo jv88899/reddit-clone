@@ -1,7 +1,12 @@
+import CommentForm from "components/CommentForm";
+import Post from "components/Post";
+import DeleteButton from "components/shared/DeleteButton";
+import Empty from "components/shared/Empty";
 import LoadingIndicatorBox from "components/shared/LoadingIndicator/Box";
 import { getPost } from "lib/firebase";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import useStore from "store";
 import styled from "styled-components/macro";
 
 const Wrapper = styled.div`
@@ -36,6 +41,7 @@ const PostWrapper = styled.div`
 
 export default function PostDetail() {
   const { postId } = useParams();
+  const user = useStore((state) => state.user);
   const { data: post, isLoading } = useQuery(["post", postId], () =>
     getPost(postId)
   );
@@ -43,17 +49,39 @@ export default function PostDetail() {
   if (isLoading) return <LoadingIndicatorBox />;
   if (!post) return <Empty />;
 
-  return <>postdetail</>;
+  return (
+    <>
+      <PostDetailPost post={post} />
+      <PostDetailInfoBar postId={postId} post={post} user={user} />
+      {user && <CommentForm postId={postId} />}
+      <PostDetailCommentSection postId={postId} />
+    </>
+  );
 }
 
-function PostDetailInfoBar() {
-  return <>postdetailinfobar</>;
+function PostDetailPost({ post }) {
+  return (
+    <PostWrapper>
+      <Post post={post} full />
+    </PostWrapper>
+  );
+}
+
+function PostDetailInfoBar({ user, postId, post }) {
+  const { author, views, upvotePercentage } = post;
+
+  const isAuthor = author.uid === user?.uid;
+
+  return (
+    <Wrapper round={!user}>
+      <span>{views} view</span>
+      <span>&nbsp; | &nbsp;</span>
+      <span>{upvotePercentage}% upvoted</span>
+      {isAuthor && <DeleteButton />}
+    </Wrapper>
+  );
 }
 
 function PostDetailCommentSection() {
   return <>postdetailcommentsection</>;
-}
-
-function PostDetailPost() {
-  return <>postdetailpost</>;
 }
