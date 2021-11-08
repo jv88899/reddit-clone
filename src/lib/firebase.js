@@ -134,7 +134,12 @@ export async function getDocuments(ref) {
   return docs;
 }
 
-export async function getPostsByUsername(username) {}
+export async function getPostsByUsername(username) {
+  const col = collection(db, "posts");
+  const q = query(col, where("author.username", "==", username));
+  const posts = await getDocuments(q);
+  return posts;
+}
 
 export async function getPostsByCategory(category) {}
 
