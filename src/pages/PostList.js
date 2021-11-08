@@ -1,8 +1,9 @@
 import Post from "components/Post";
 import Empty from "components/shared/Empty";
 import LoadingIndicatorBox from "components/shared/LoadingIndicator/Box";
-import { getPosts } from "lib/firebase";
+import { getPosts, getPostsByCategory, getPostsByUsername } from "lib/firebase";
 import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import styled from "styled-components/macro";
 
 const List = styled.ul`
@@ -25,7 +26,17 @@ const Item = styled.li`
 `;
 
 export default function PostList() {
-  const { data: posts, isLoading } = useQuery("posts", getPosts);
+  const { username, category } = useParams();
+  const { data: posts, isLoading } = useQuery(
+    ["posts", username, category],
+    () => {
+      return username
+        ? getPostsByUsername(username)
+        : category
+        ? getPostsByCategory(category)
+        : getPosts();
+    }
+  );
 
   if (isLoading) return <LoadingIndicatorBox />;
   if (!posts || !posts.length) return <Empty />;

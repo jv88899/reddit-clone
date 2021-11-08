@@ -134,9 +134,9 @@ export async function getDocuments(ref) {
   return docs;
 }
 
-export async function getPostsByUsername() {}
+export async function getPostsByUsername(username) {}
 
-export async function getPostsByCategory() {}
+export async function getPostsByCategory(category) {}
 
 export async function deletePost() {}
 
