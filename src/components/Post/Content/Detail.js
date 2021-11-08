@@ -2,6 +2,7 @@ import Author from "components/shared/Author";
 import { link } from "components/shared/helpers";
 import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
+import dayjs from "dayjs";
 
 const Wrapper = styled.div`
   font-size: 13px;
@@ -32,7 +33,7 @@ export default function PostContentDetail({ post }) {
       <Link to={`/a/${category}`}>/a/{category}</Link>
       <span>by</span>
       <Author username={author.username} />
-      <span>created</span>
+      <span>{dayjs(created.toDate()).fromNow()}</span>
     </Wrapper>
   );
 }

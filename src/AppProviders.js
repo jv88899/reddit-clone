@@ -7,6 +7,7 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyle from "styles/globalStyle";
 import theme from "theme";
 import { ReactQueryDevtools } from "react-query/devtools";
+import "lib/date-config";
 
 const queryClient = new QueryClient({
   defaultOptions: {
