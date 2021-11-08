@@ -1,3 +1,7 @@
+import LoadingIndicatorBox from "components/shared/LoadingIndicator/Box";
+import { getPost } from "lib/firebase";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import styled from "styled-components/macro";
 
 const Wrapper = styled.div`
@@ -31,6 +35,14 @@ const PostWrapper = styled.div`
 `;
 
 export default function PostDetail() {
+  const { postId } = useParams();
+  const { data: post, isLoading } = useQuery(["post", postId], () =>
+    getPost(postId)
+  );
+
+  if (isLoading) return <LoadingIndicatorBox />;
+  if (!post) return <Empty />;
+
   return <>postdetail</>;
 }
 

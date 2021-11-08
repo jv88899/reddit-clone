@@ -122,7 +122,11 @@ export async function getPosts() {
   return posts;
 }
 
-export async function getPost() {}
+export async function getPost(postId) {
+  const postRef = doc(db, "posts", postId);
+  const postDoc = await getDoc(postRef);
+  return postDoc.exists() ? { id: postDoc.id, ...postDoc.data() } : null;
+}
 
 export async function getDocuments(ref) {
   const snap = await getDocs(ref);
