@@ -141,7 +141,16 @@ export async function getPostsByUsername(username) {
   return posts;
 }
 
-export async function getPostsByCategory(category) {}
+export async function getPostsByCategory(category) {
+  const col = collection(db, "posts");
+  const q = query(
+    col,
+    where("category", "==", category),
+    orderBy("score", "desc")
+  );
+  const posts = await getDocuments(q);
+  return posts;
+}
 
 export async function deletePost() {}
 
