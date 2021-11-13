@@ -1,5 +1,7 @@
 import PostVoteDownvote from "components/Post/Vote/Downvote";
 import PostVoteUpvote from "components/Post/Vote/Upvote";
+import { toggleVote } from "lib/firebase";
+import { useMutation } from "react-query";
 import useStore from "store";
 import styled from "styled-components/macro";
 
@@ -22,12 +24,25 @@ export default function PostVote({ post }) {
   const userId = user?.uid;
   const didUpvote = votes[userId] === 1;
   const didDownvote = votes[userId] === -1;
+  const mutation = useMutation(toggleVote);
+
+  function onUpvote() {
+    mutation.mutate({ userId, postId, value: 1 });
+  }
+
+  function onDownvote() {
+    mutation.mutate({ userId, postId, value: -1 });
+  }
 
   return (
     <Wrapper>
-      <PostVoteUpvote canVote={user} didVote={didUpvote} />
+      <PostVoteUpvote onClick={onUpvote} canVote={user} didVote={didUpvote} />
       <span>{score}</span>
-      <PostVoteDownvote canVote={user} didVote={didDownvote} />
+      <PostVoteDownvote
+        onClick={onDownvote}
+        canVote={user}
+        didVote={didDownvote}
+      />
     </Wrapper>
   );
 }
