@@ -22,6 +22,7 @@ import {
   orderBy,
   runTransaction,
 } from "firebase/firestore/lite";
+import { getUpvotePercentage } from "lib/helpers";
 import { useEffect } from "react";
 import useStore from "store";
 import shallow from "zustand/shallow";
@@ -182,7 +183,8 @@ export async function toggleVote(vote) {
       } else {
         votes[userId] = value;
       }
-      transaction.update(postRef, { votes });
+      const upvotePercentage = getUpvotePercentage(votes);
+      transaction.update(postRef, { votes, upvotePercentage });
     }
   });
 }
