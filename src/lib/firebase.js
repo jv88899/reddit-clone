@@ -18,6 +18,7 @@ import {
   getDocs,
   getDoc,
   addDoc,
+  deleteDoc,
   serverTimestamp,
   orderBy,
   runTransaction,
@@ -158,7 +159,11 @@ export async function getPostsByCategory(category) {
   return posts;
 }
 
-export async function deletePost() {}
+export async function deletePost(postId) {
+  const docRef = doc(db, "posts", postId);
+  const deletedPost = await deleteDoc(docRef);
+  return deletedPost;
+}
 
 export async function createComment() {}
 

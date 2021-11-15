@@ -4,10 +4,11 @@ import Post from "components/Post";
 import DeleteButton from "components/shared/DeleteButton";
 import Empty from "components/shared/Empty";
 import LoadingIndicatorBox from "components/shared/LoadingIndicator/Box";
-import { getPost } from "lib/firebase";
+import { deletePost, getPost } from "lib/firebase";
 import { usePostViewCount } from "lib/hooks";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useMutation, useQuery } from "react-query";
+import { useParams, useHistory } from "react-router-dom";
 import useStore from "store";
 import styled from "styled-components/macro";
 
@@ -72,6 +73,13 @@ function PostDetailPost({ post }) {
 
 function PostDetailInfoBar({ user, postId, post }) {
   const { author, views, upvotePercentage } = post;
+  const history = useHistory();
+  const mutation = useMutation(deletePost, {
+    onSuccess: () => {
+      history.replace("/");
+      toast.success("Post deleted");
+    },
+  });
 
   const isAuthor = author.uid === user?.uid;
 
@@ -83,7 +91,7 @@ function PostDetailInfoBar({ user, postId, post }) {
       </span>
       <span>&nbsp; | &nbsp;</span>
       <span>{upvotePercentage}% upvoted</span>
-      {isAuthor && <DeleteButton />}
+      {isAuthor && <DeleteButton onClick={() => mutation.mutate(postId)} />}
     </Wrapper>
   );
 }
