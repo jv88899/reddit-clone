@@ -166,7 +166,16 @@ export async function getCommentsByPostId() {}
 
 export async function deleteComment() {}
 
-export async function addView() {}
+export async function addView(postId) {
+  const postRef = doc(db, "posts", postId);
+  await runTransaction(db, async (transaction) => {
+    const postDoc = await transaction.get(postRef);
+    if (postDoc.exists()) {
+      const newViewCount = postDoc.data().views + 1;
+      transaction.update(postRef, { views: newViewCount });
+    }
+  });
+}
 
 export async function getCommentCount() {}
 

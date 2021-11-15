@@ -5,6 +5,7 @@ import DeleteButton from "components/shared/DeleteButton";
 import Empty from "components/shared/Empty";
 import LoadingIndicatorBox from "components/shared/LoadingIndicator/Box";
 import { getPost } from "lib/firebase";
+import { usePostViewCount } from "lib/hooks";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import useStore from "store";
@@ -42,6 +43,7 @@ const PostWrapper = styled.div`
 
 export default function PostDetail() {
   const { postId } = useParams();
+  usePostViewCount(postId);
   const user = useStore((state) => state.user);
   const { data: post, isLoading } = useQuery(["post", postId], () =>
     getPost(postId)
