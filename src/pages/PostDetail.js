@@ -77,7 +77,10 @@ function PostDetailInfoBar({ user, postId, post }) {
 
   return (
     <Wrapper round={!user}>
-      <span>{views} view</span>
+      {/* <span>{views} view</span> */}
+      <span>
+        {views > 1 || views === 0 ? `${views} views` : `${views} view`}
+      </span>
       <span>&nbsp; | &nbsp;</span>
       <span>{upvotePercentage}% upvoted</span>
       {isAuthor && <DeleteButton />}
