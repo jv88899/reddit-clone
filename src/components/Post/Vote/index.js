@@ -2,6 +2,7 @@ import PostVoteDownvote from "components/Post/Vote/Downvote";
 import PostVoteUpvote from "components/Post/Vote/Upvote";
 import { toggleVote } from "lib/firebase";
 import { useMutation, useQueryClient } from "react-query";
+import { useLocation } from "react-router-dom";
 import useStore from "store";
 import styled from "styled-components/macro";
 
@@ -25,9 +26,11 @@ export default function PostVote({ post }) {
   const didUpvote = votes[userId] === 1;
   const didDownvote = votes[userId] === -1;
   const queryClient = useQueryClient();
+  const location = useLocation();
   const mutation = useMutation(toggleVote, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["post", postId]);
+      const isHomePage = location.pathname === "/";
+      queryClient.invalidateQueries(isHomePage ? "posts" : ["post", postId]);
     },
   });
 
