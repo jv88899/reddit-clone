@@ -182,7 +182,11 @@ export async function addView(postId) {
   });
 }
 
-export async function getCommentCount() {}
+export async function getCommentCount(postId) {
+  const col = collection(db, "posts", postId, "comments");
+  const { size } = await getDocs(col);
+  return size;
+}
 
 export async function toggleVote(vote) {
   const { postId, userId, value } = vote;
