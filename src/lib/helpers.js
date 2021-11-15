@@ -9,4 +9,6 @@ export function getUpvotePercentage(votes) {
   return totalVotes !== 0 ? Math.round((upvoteCount * 100) / totalVotes) : 0;
 }
 
-export function getPostScore() {}
+export function getPostScore(votes) {
+  return Object.values(votes).reduce((acc, val) => (acc += val), 0);
+}
