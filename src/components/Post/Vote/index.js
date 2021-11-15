@@ -1,7 +1,7 @@
 import PostVoteDownvote from "components/Post/Vote/Downvote";
 import PostVoteUpvote from "components/Post/Vote/Upvote";
 import { toggleVote } from "lib/firebase";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import useStore from "store";
 import styled from "styled-components/macro";
 
@@ -24,7 +24,12 @@ export default function PostVote({ post }) {
   const userId = user?.uid;
   const didUpvote = votes[userId] === 1;
   const didDownvote = votes[userId] === -1;
-  const mutation = useMutation(toggleVote);
+  const queryClient = useQueryClient();
+  const mutation = useMutation(toggleVote, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["post", postId]);
+    },
+  });
 
   function onUpvote() {
     mutation.mutate({ userId, postId, value: 1 });
