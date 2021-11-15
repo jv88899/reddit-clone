@@ -3,7 +3,10 @@ import Error from "components/shared/form/Error";
 import Form from "components/shared/form/Form";
 import Input from "components/shared/form/Input";
 import { transition } from "components/shared/helpers";
+import { createComment, getTimestamp } from "lib/firebase";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useMutation } from "react-query";
 import useStore from "store";
 import styled from "styled-components/macro";
 
@@ -62,10 +65,25 @@ export default function CommentForm({ postId }) {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({ mode: "onBlur" });
+  const mutation = useMutation(createComment, {
+    onSuccess: () => {
+      toast.success("Comment created");
+      reset();
+    },
+  });
 
   function onSubmit({ commentText }) {
-    console.log(commentText);
+    mutation.mutate({
+      postId,
+      body: commentText,
+      created: getTimestamp(),
+      author: {
+        username: user.username,
+        uid: user.uid,
+      },
+    });
   }
 
   return (

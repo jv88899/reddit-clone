@@ -165,7 +165,11 @@ export async function deletePost(postId) {
   return deletedPost;
 }
 
-export async function createComment() {}
+export async function createComment(comment) {
+  const col = collection(db, "posts", comment.postId, "comments");
+  const newComment = await addDoc(col, comment);
+  return newComment;
+}
 
 export async function getCommentsByPostId() {}
 
