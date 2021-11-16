@@ -178,7 +178,11 @@ export async function getCommentsByPostId(postId) {
   return comments;
 }
 
-export async function deleteComment() {}
+export async function deleteComment({ postId, commentId }) {
+  const docRef = doc(db, "posts", postId, "comments", commentId);
+  const deletedDoc = await deleteDoc(docRef);
+  return deletedDoc;
+}
 
 export async function addView(postId) {
   const postRef = doc(db, "posts", postId);
