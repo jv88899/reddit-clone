@@ -4,7 +4,7 @@ import Post from "components/Post";
 import DeleteButton from "components/shared/DeleteButton";
 import Empty from "components/shared/Empty";
 import LoadingIndicatorBox from "components/shared/LoadingIndicator/Box";
-import { deletePost, getPost } from "lib/firebase";
+import { deletePost, getCommentsByPostId, getPost } from "lib/firebase";
 import { usePostViewCount } from "lib/hooks";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "react-query";
@@ -96,6 +96,11 @@ function PostDetailInfoBar({ user, postId, post }) {
   );
 }
 
-function PostDetailCommentSection() {
-  return <CommentList comments={[]} />;
+function PostDetailCommentSection({ postId }) {
+  const { data: comments, isLoading } = useQuery(["comments", postId], () =>
+    getCommentsByPostId(postId)
+  );
+
+  if (isLoading || !comments?.length) return <Empty comments />;
+  return <CommentList comments={comments} />;
 }

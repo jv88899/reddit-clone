@@ -1,3 +1,5 @@
+import CommentContent from "components/CommentList/Content";
+import CommentDetail from "components/CommentList/Detail";
 import styled from "styled-components/macro";
 
 const Wrapper = styled.div`
@@ -13,6 +15,12 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function CommentListItem() {
-  return <>commentlistitem</>;
+export default function CommentListItem({ comment }) {
+  const { body, ...details } = comment;
+  return (
+    <Wrapper>
+      <CommentDetail {...details} />
+      <CommentContent>{body}</CommentContent>
+    </Wrapper>
+  );
 }

@@ -171,7 +171,12 @@ export async function createComment(comment) {
   return newComment;
 }
 
-export async function getCommentsByPostId() {}
+export async function getCommentsByPostId(postId) {
+  const col = collection(db, "posts", postId, "comments");
+  const q = query(col, orderBy("created", "desc"));
+  const comments = await getDocuments(q);
+  return comments;
+}
 
 export async function deleteComment() {}
 
